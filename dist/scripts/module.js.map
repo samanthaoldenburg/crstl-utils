@@ -1,1 +1,0 @@
-{"version":3,"file":"module.js","sources":["../../src/ts/module.ts"],"sourcesContent":["Hooks.once(\"init\", () => {\n console.log(\"Hello world!\");\n});\n\n"],"names":[],"mappings":"AAAA,MAAM,KAAK,OAAQ,IAAM,CACxB,QAAQ,IAAI,cAAc,CAC3B,CAAC"}

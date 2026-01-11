@@ -5,7 +5,7 @@ export default defineConfig({
   build: {
     sourcemap: true,
     rollupOptions: {
-      input: "src/ts/module.ts",
+      input: "src/ts/crstl-utils.ts",
       output: {
         dir: "dist/scripts/",
         entryFileNames: "[name].js",

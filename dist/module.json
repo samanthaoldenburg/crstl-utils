@@ -13,5 +13,5 @@
     "minimum": "13",
     "verified": "13"
   },
-  "esmodules": ["scripts/module.js"]
+  "esmodules": ["scripts/crstl-utils.js"]
 }
