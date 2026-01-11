@@ -1418,6 +1418,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"crstl-utils@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "crstl-utils@workspace:."
+  dependencies:
+    fvtt-types: "github:League-of-Foundry-Developers/foundry-vtt-types#main"
+    rollup-plugin-copy: "npm:^3.5.0"
+    typescript: "npm:^5.9.3"
+    vite: "npm:^7.3.1"
+  languageName: unknown
+  linkType: soft
+
 "debug@npm:4, debug@npm:^4.3.2, debug@npm:^4.3.4, debug@npm:~4.4.1":
   version: 4.4.3
   resolution: "debug@npm:4.4.3"
@@ -3181,17 +3192,6 @@ __metadata:
   checksum: 10c0/3fd11735eac5e7d60d6006d99ac0a055f148a89e9baf5f0b51ac103022dec30556b44190b37f6737ca50f81e8e50dc13e724f9edf6290c412ff5ab2101ce7780
   languageName: node
   linkType: hard
-
-"src@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "src@workspace:."
-  dependencies:
-    fvtt-types: "github:League-of-Foundry-Developers/foundry-vtt-types#main"
-    rollup-plugin-copy: "npm:^3.5.0"
-    typescript: "npm:^5.9.3"
-    vite: "npm:^7.3.1"
-  languageName: unknown
-  linkType: soft
 
 "ssri@npm:^13.0.0":
   version: 13.0.0
