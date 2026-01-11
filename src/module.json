@@ -1,0 +1,17 @@
+{
+ "id": "crstl-utils",
+ "title": "CrstlFoundry Utils",
+ "description": "A personal module that defines util functions for myself",
+ "authors": [
+   {
+     "name": "Samantha Oldenburg",
+     "email": "s.wolfgang.oldenburg@gmail.com"
+   }
+ ],
+ "version": "1.0.0",
+ "compatibility": {
+   "minimum": "13",
+   "verified": "13"
+ }
+}
+
