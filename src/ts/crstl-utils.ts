@@ -1,3 +1,5 @@
+import { CFTokenFactory } from "./factories/token-factory"
+
 declare global {
   interface Window {
     CrstlUtils: any
@@ -17,5 +19,9 @@ export class CrstlUtils {
     console.log('Howdy!')
   }
 
-  constructor (private readonly game: ReadyGame) {}
+  public tokenFactory: CFTokenFactory;
+
+  constructor (private readonly game: ReadyGame) {
+    this.tokenFactory = new CFTokenFactory(this.game)
+  }
 }
