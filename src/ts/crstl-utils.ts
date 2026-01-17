@@ -1,20 +1,21 @@
 declare global {
   interface Window {
-    CrstlUtils: any;
+    CrstlUtils: any
   }
 }
-Hooks.once("init", () => {
-  console.log("Hello world!");
-  CrstlUtils.myTest();
-  initializeModule();
-});
+Hooks.once('init', () => {
+  console.log('Hello world!')
+  CrstlUtils.myTest()
+})
 
-function initializeModule() {
-  window.CrstlUtils = CrstlUtils;
-}
+Hooks.once('ready', () => {
+  window.CrstlUtils = new CrstlUtils(game as ReadyGame)
+})
 
 export class CrstlUtils {
   static myTest = (): void => {
-    console.log("Howdy!");
+    console.log('Howdy!')
   }
+
+  constructor (private readonly game: ReadyGame) {}
 }
