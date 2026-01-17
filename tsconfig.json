@@ -23,6 +23,7 @@
    "skipLibCheck": true
  },
  "include": [
-   "src"
+    "src",
+    "typings/sequencer.d.ts"
  ]
 }
