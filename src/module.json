@@ -17,5 +17,16 @@
   "url": "https://github.com/samanthaoldenburg/crstl-utils",
   "manifest": "https://github.com/samanthaoldenburg/crstl-utils/releases/latest/download/module.json",
   "download": "https://github.com/samanthaoldenburg/crstl-utils/releases/latest/download/module.zip",
-  "readme": "https://github.com/samanthaoldenburg/crstl-utils/blob/main/README.md"
+  "readme": "https://github.com/samanthaoldenburg/crstl-utils/blob/main/README.md",
+  "relationships": {
+    "requires": [
+      {
+        "id": "sequencer",
+        "manifest": "https://github.com/FantasyCalendar/FoundryVTT-Sequencer/releases/latest/download/module.json",
+        "compatibility": {
+          "minimum": "3.6.0"
+        }
+      }
+    ]
+  }
 }
