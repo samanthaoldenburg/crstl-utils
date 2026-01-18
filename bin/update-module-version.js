@@ -26,3 +26,7 @@ fs.writeFileSync(FOUNDRY_MODULE, JSON.stringify(foundryInfo, null, 2))
 runCommand(`git add ${FOUNDRY_MODULE}`)
 runCommand(`git commit --amend --no-edit`)
 runCommand(`git tag -fa -m '${process.argv[2]} v${newVersion}' v${newVersion}`)
+
+runCommand('git push')
+runCommand('git push --tags')
+runCommand(`gh release create v${newVersion} --generate-notes --latest`)
