@@ -21,8 +21,8 @@ const packageInfo = JSON.parse(fs.readFileSync(PACKAGE_FILE))
 newVersion = packageInfo.version
 foundryInfo.version = newVersion
 
-fs.writeFileSync(FOUNDRY_MODULE, JSON.stringify((foundryInfo, null, 2)))
+fs.writeFileSync(FOUNDRY_MODULE, JSON.stringify(foundryInfo, null, 2))
 
 runCommand(`git add ${FOUNDRY_MODULE}`)
 runCommand(`git commit --amend --no-edit`)
-runCommand(`git tag -fa ${process.argv.slice(3).join(' ')} v${newVersion}`)
+runCommand(`git tag -fa -m '${argv[2]} v${newVersion}' v${newVersion}`)
