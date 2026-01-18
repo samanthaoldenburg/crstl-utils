@@ -6,6 +6,7 @@ import { defineConfig, Plugin } from "vite";
 export default defineConfig({
   build: {
     sourcemap: true,
+    minify: false,
     rollupOptions: {
       input: "src/ts/crstl-utils.ts",
       output: {
