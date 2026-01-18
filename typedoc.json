@@ -1,0 +1,8 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "tsconfig": "./tsconfig.json",
+  "excludeExternals": true,
+  "entryPoints": ["./src/ts/crstl-utils.ts"],
+  "plugin": ["typedoc-plugin-missing-exports"],
+  "out": "doc"
+}

@@ -7,17 +7,20 @@ import { CFToken } from "../domain/token"
 // Decoded UUID gotten by clicking the "Copy UUID" button on the token document.
 
 export class CFTokenFactory {
-  constructor(private readonly game: ReadyGame) { console.log(this.game) }
+  constructor(private readonly game: ReadyGame) {}
 
   /**
-   * Build a CFToken
+   * Build a CFToken given a Token.
+   *
+   * @remarks
+   * This is useful for `canvas.tokens.controlled`, which returns `Token[]`
    */
   buildFromToken(token: Token): CFToken {
     return new CFToken(token.document, token.scene)
   }
 
-  /** '
-   * C
+  /** 
+   * Create a CFToken, given a token document
    */
   buildFromTokenDocument(token: TokenDocument): CFToken {
     return new CFToken(token, token.parent as Scene)

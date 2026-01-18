@@ -14,6 +14,9 @@ Hooks.once('ready', () => {
   window.CrstlUtils = new CrstlUtils(game as ReadyGame)
 })
 
+/**
+ * Main entrypoint to the utility. An instance of this class gets initialized when the game is ready.
+ */
 export class CrstlUtils {
   static myTest = (): void => {
     console.log('Howdy!')
