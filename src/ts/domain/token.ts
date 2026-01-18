@@ -3,11 +3,12 @@ interface TokenMoveOptions {
   moveTowards?: EasingOptionsWithTarget
 }
 export class CFToken {
+  // TODO: remove scene
   constructor (private readonly token: TokenDocument, private readonly scene: Scene) {}
 
-  id(): string | null { return this.token.id }
-  x(): number { return this.token.x }
-  y(): number { return this.token.y }
+  get id(): string | null { return this.token.id }
+  get x(): number { return this.token.x }
+  get y(): number { return this.token.y }
 
   async moveGrid(gridX: number, gridY: number, options: TokenMoveOptions = {}) {
     const xTransform = gridX * this.scene.grid.sizeX;
@@ -17,7 +18,7 @@ export class CFToken {
       .animation()
       .on(this.token)
       .moveTowards(
-        { x: this.x() + xTransform, y: this.y() + yTransform },
+        { x: this.x + xTransform, y: this.y + yTransform },
         options.moveTowards
       )
 

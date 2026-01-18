@@ -9,26 +9,42 @@ import { CFToken } from "../domain/token"
 export class CFTokenFactory {
   constructor(private readonly game: ReadyGame) { console.log(this.game) }
 
+  /**
+   * Build a CFToken
+   */
+  buildFromToken(token: Token): CFToken {
+    return new CFToken(token.document, token.scene)
+  }
+
+  /** '
+   * C
+   */
+  buildFromTokenDocument(token: TokenDocument): CFToken {
+    return new CFToken(token, token.parent as Scene)
+  }
+
+  /**
+   * Create a CFToken given a UUID copied by clicking the button on the token's document
+   *
+   * This function works even if you're not currently on the scene with the token
+   * @param documentUuid - Full token document ID
+   *
+   * @example
+   * const tokenFactory = new CFTokenFactory(game);
+   * const myToken = tokenFactory.fromDocumentUuid(
+   *   'Scene.DZez8ZtkMG03KOOm.Token.CVI3r8M5RxNVJx61.Actor.iaQHKZChq3InEsjR'
+   * );
+   */
   buildFromDocumentUuid(documentUuid: string): CFToken {
     return this.buildFromResolvedTokenUuid(
       this.tokenUuidFromDocumentUuid(documentUuid)
     )
   }
 
-  safeBuildFromResolvedTokenUuid(tokenResolvedUuid: foundry.utils.ResolvedUUID): CFToken | null {
-    try {
-      return this.buildFromResolvedTokenUuid(tokenResolvedUuid)
-    } catch (e) {
-      if (e instanceof CFResourceNotFoundError) {
-        console.warn(e)
-        return null
-      } else {
-        throw e
-      }
-    }
-  }
-
-  buildFromResolvedTokenUuid(tokenResolvedUuid: foundry.utils.ResolvedUUID): CFToken {
+  /**
+   * Create a CFToken given a ResolvedUUID of a token within a scene
+   */
+  private buildFromResolvedTokenUuid(tokenResolvedUuid: foundry.utils.ResolvedUUID): CFToken {
     const sceneId = tokenResolvedUuid.primaryId
 
     if (sceneId === undefined) { throw new CFError("Invalid Token Resolved UUID", {tokenResolvedUuid}) }
@@ -44,7 +60,7 @@ export class CFTokenFactory {
 
     return new CFToken(token, scene)
   }
-  
+
   /* Get a token UUID, given the UUID copied by clicking the button on the token's document.
    *
    * These tokens have the format of `'Scene.DZez8ZtkMG03KOOm.Token.CVI3r8M5RxNVJx61.Actor.iaQHKZChq3InEsjR'`
