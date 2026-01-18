@@ -16,14 +16,14 @@ export class CFTokenFactory {
    * This is useful for `canvas.tokens.controlled`, which returns `Token[]`
    */
   buildFromToken(token: Token): CFToken {
-    return new CFToken(token.document, token.scene)
+    return new CFToken(token.document)
   }
 
   /** 
    * Create a CFToken, given a token document
    */
   buildFromTokenDocument(token: TokenDocument): CFToken {
-    return new CFToken(token, token.parent as Scene)
+    return new CFToken(token)
   }
 
   /**
@@ -61,7 +61,7 @@ export class CFTokenFactory {
 
     if (token === undefined || token === null) { throw new CFResourceNotFoundError("Token does not exist", {scene, tokenId}) }
 
-    return new CFToken(token, scene)
+    return new CFToken(token)
   }
 
   /* Get a token UUID, given the UUID copied by clicking the button on the token's document.
