@@ -25,4 +25,4 @@ fs.writeFileSync(FOUNDRY_MODULE, JSON.stringify(foundryInfo, null, 2))
 
 runCommand(`git add ${FOUNDRY_MODULE}`)
 runCommand(`git commit --amend --no-edit`)
-runCommand(`git tag -fa -m '${argv[2]} v${newVersion}' v${newVersion}`)
+runCommand(`git tag -fa -m '${process.argv[2]} v${newVersion}' v${newVersion}`)
