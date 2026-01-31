@@ -5,6 +5,7 @@
   "private": true,
   "scripts": {
     "build": "tsc && vite build",
+    "build:macros": "tsc && vite build --config vite.config.macros.ts",
     "lint": "ts-standard",
     "lint:fix": "ts-standard --fix",
     "doc": "typedoc",
