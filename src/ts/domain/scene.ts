@@ -1,53 +1,58 @@
-import { CFBaseScenePlaceable, CFSceneSequencePlaceable } from "./scene-placeable"
+import { CFScenePlaceable, DocumentUpdateData } from "./scene-placeable"
 
 export type SequenceAnimationImplementation =  (
-  placeable: CFSceneSequencePlaceable,
+  placeable: CFScenePlaceable,
   animationSection: AnimationSection,
   pos: Vector2
 ) => CoreMethods
 
 export class CFScene {
-  constructor(private scene: Scene) { }
+  constructor(public scene: Scene) { }
 
   get gridSizeX(): number { return this.scene.grid.sizeX }
   get gridSizeY(): number { return this.scene.grid.sizeY }
 
-  moveAlongGrid(
-    item: CFBaseScenePlaceable,
-    gridX: number,
-    gridY: number,
-    sequenceImplementation?: SequenceAnimationImplementation 
-  ): Promise<unknown> {
-    const xTransform = gridX * this.gridSizeX;
-    const yTransform = gridY * this.gridSizeY;
-    const xPos = item.x + xTransform;
-    const yPos = item.y + yTransform;
+  get gridSize(): Vector2 {
+    return {x: this.scene.grid.sizeX, y: this.scene.grid.sizeY}
+  }
 
-    const sequenceItem = item as CFSceneSequencePlaceable
-    if (sequenceItem.visibleItem) {
-      const animationSection = new Sequence().animation().on(sequenceItem.visibleItem)
-      if (sequenceImplementation) {
-        return sequenceImplementation(
-          sequenceItem, animationSection, {x: xPos, y: yPos}
-        ).play()
-      } else {
-        return CFScene.defaultMoveAnimation(
-          sequenceItem, animationSection, {x: xPos, y: yPos}
-        ).play()
-      }
-    } else {
-      if (sequenceImplementation) {
-        console.warn("Sequence given for non-visible item")
-      }
+  public getEmbeddedDocumentId(type: keyof Scene.Metadata.Embedded, uuid: string): string {
+    return [
+      'Scene',
+      this.scene.id,
+      type as string,
+      uuid
+    ].join('.');
+  }
 
-      return this.scene.updateEmbeddedDocuments(
-        item.documentType,
-        [{_id: item.id, x: xPos, y: yPos}]
-      )
+  public calculateGridMovement(position: Vector2, movement: Vector2): Vector2 {
+    return {
+      x: position.x + (this.gridSizeX * movement.x),
+      y: position.y + (this.gridSizeY * movement.y)
     }
   }
 
-  private static defaultMoveAnimation: SequenceAnimationImplementation = (_placeable: CFSceneSequencePlaceable, animationSection: AnimationSection, pos: Vector2) => {
+  async moveItemAlongGrid(
+    item: CFScenePlaceable,
+    gridMovement: Vector2,
+    sequenceAnimationImplementation?: SequenceAnimationImplementation 
+  ): Promise<DocumentUpdateData> {
+    let sequenceImplementation: SequenceAnimationImplementation
+
+    if (sequenceAnimationImplementation === undefined) {
+      sequenceImplementation = CFScene.defaultMoveAnimation;
+    } else {
+      sequenceImplementation = sequenceAnimationImplementation 
+    }
+
+    return await item.moveAlongGrid(this, gridMovement, sequenceImplementation)
+  }
+
+  static defaultMoveAnimation: SequenceAnimationImplementation = (
+    _placeable: CFScenePlaceable,
+    animationSection: AnimationSection,
+    pos: Vector2
+  ) => {
     return animationSection.moveTowards(pos).moveSpeed(10);
   }
 }

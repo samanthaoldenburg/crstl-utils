@@ -1,5 +1,7 @@
 import { CFTokenFactory } from "./factories/token-factory"
 import { CFSceneFactory } from "./factories/scene-factory"
+import { CFScene } from "./domain/scene"
+import { CFWallFactory } from "./factories/wall-factory"
 
 declare global {
   interface Window {
@@ -28,9 +30,15 @@ export class CrstlUtils {
 
   public tokenFactory: CFTokenFactory;
   public sceneFactory: CFSceneFactory;
+  public wallFactory: CFWallFactory;
 
   constructor (private readonly game: ReadyGame) {
     this.tokenFactory = new CFTokenFactory(this.game)
+    this.wallFactory = new CFWallFactory(this.game)
     this.sceneFactory = new CFSceneFactory(this.game)
+  }
+
+  public currentScene(): CFScene {
+    return this.sceneFactory.buildFromScene(this.game.scenes.current as Scene);
   }
 }

@@ -1,20 +1,23 @@
+import { CFScene, SequenceAnimationImplementation } from "./scene";
+
+export type DocumentUpdateData = WallDocument.UpdateData | TokenDocument.UpdateData
+type TypeOfDocument = WallDocument | TokenDocument
+
 /**
  * Interface for something placeable on a scene.
  */
-export interface CFBaseScenePlaceable {
+export interface CFScenePlaceable {
+  document: TypeOfDocument;
   documentType: keyof Scene.Metadata.Embedded;
   id: string | null;
   x: number;
   y: number;
+
+  moveAlongGrid: (
+    scene: CFScene,
+    gridMove: Vector2,
+    sequenceImplementation: SequenceAnimationImplementation
+  ) => Promise<DocumentUpdateData>;
 }
 
-export interface CFScenePlaceable extends CFBaseScenePlaceable {}
-
-export interface CFSceneSequencePlaceable extends CFBaseScenePlaceable {
-  visibleItem: VisibleFoundryTypes;
-}
-
-export const buildSequenceAnimation = (placeable: CFSceneSequencePlaceable): AnimationSection => {
-  return new Sequence().animation().on(placeable.visibleItem);
-}
 
