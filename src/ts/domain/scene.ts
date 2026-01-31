@@ -51,7 +51,7 @@ export class CFScene {
 
     for (const [embeddedType, updates] of Object.entries(embeddedDocumentUpdates)) {
       if (updates.length > 0) {
-        if (updates.find(x => x._id)) {
+        if (embeddedType !== 'Token') {
           this.scene.updateEmbeddedDocuments(embeddedType as keyof Scene.Metadata.Embedded, updates)
         }
       }
