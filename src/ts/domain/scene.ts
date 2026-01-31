@@ -6,6 +6,8 @@ export type SequenceAnimationImplementation =  (
   pos: Vector2
 ) => CoreMethods
 
+type EmbeddedDocumentUpdates = Record<keyof Scene.Metadata.Embedded, DocumentUpdateData[]>
+
 export class CFScene {
   constructor(public scene: Scene) { }
 
@@ -30,6 +32,32 @@ export class CFScene {
       x: position.x + (this.gridSizeX * movement.x),
       y: position.y + (this.gridSizeY * movement.y)
     }
+  }
+
+  async moveItemsAlongGrid(
+    items: CFScenePlaceable[],
+    gridMovement: Vector2,
+    sequenceAnimationImplementation?: SequenceAnimationImplementation 
+  ): Promise<EmbeddedDocumentUpdates> {
+    const embeddedDocumentUpdates: EmbeddedDocumentUpdates = {} as EmbeddedDocumentUpdates
+
+    for (const item of items) {
+      const documentUpdate = await this.moveItemAlongGrid(item, gridMovement, sequenceAnimationImplementation)
+
+      if (embeddedDocumentUpdates[item.documentType]) {
+        embeddedDocumentUpdates[item.documentType].push(documentUpdate)
+      } else { embeddedDocumentUpdates[item.documentType] = [documentUpdate] }
+    }
+
+    for (const [embeddedType, updates] of Object.entries(embeddedDocumentUpdates)) {
+      if (updates.length > 0) {
+        if (updates.find(x => x._id)) {
+          this.scene.updateEmbeddedDocuments(embeddedType as keyof Scene.Metadata.Embedded, updates)
+        }
+      }
+    }
+
+    return embeddedDocumentUpdates
   }
 
   async moveItemAlongGrid(
