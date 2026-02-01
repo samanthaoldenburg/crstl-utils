@@ -1,19 +1,28 @@
-import * as fsPromises from "fs/promises";
-import copy from "rollup-plugin-copy";
-import scss from "rollup-plugin-scss";
 import { defineConfig } from "vite";
+import * as path from "path";
+import { globSync } from "glob";
+
+const macros = globSync(path.join(__dirname, 'src/macros/**/*.ts'), {absolute: false})
+
+const entries = {}
+
+for (const path of macros) {
+  if (path.match('-helper\.ts$')) { continue }
+
+  const dest = path.slice(4, -3);
+
+  entries[dest] = path
+}
+
+console.log(entries)
 
 export default defineConfig({
   build: {
-    sourcemap: true,
+    emptyOutDir: false,
     minify: false,
-    rollupOptions: {
-      input: "src/macros/index.ts",
-      output: {
-        dir: "dist/macros/",
-        entryFileNames: "[name].js",
-        format: "es",
-      },
+    lib: {
+      entry: entries,
+      formats: ["es"]
     },
   }
 });

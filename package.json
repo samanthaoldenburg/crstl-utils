@@ -6,6 +6,7 @@
   "scripts": {
     "build": "tsc && vite build",
     "build:macros": "tsc && vite build --config vite.config.macros.ts",
+    "compile:macros": "npm run build:macros && node bin/compile-macros.js",
     "lint": "ts-standard",
     "lint:fix": "ts-standard --fix",
     "doc": "typedoc",
@@ -14,6 +15,7 @@
   "devDependencies": {
     "@foundryvtt/foundryvtt-cli": "^3.0.3",
     "fvtt-types": "github:League-of-Foundry-Developers/foundry-vtt-types#main",
+    "glob": "^13.0.0",
     "rollup-plugin-copy": "^3.5.0",
     "rollup-plugin-scss": "^4.0.1",
     "ts-standard": "^12.0.2",

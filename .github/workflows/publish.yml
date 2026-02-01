@@ -30,16 +30,23 @@ jobs:
        id: get_version
        uses: battila7/get-version-action@v2
 
-     - name: Run Vite build
+     - name: Compile Main Script
        env:
          MODULE_VERSION: ${{steps.get_version.outputs.version-without-v}}
          GH_PROJECT: ${{github.repository}}
          GH_TAG: ${{github.event.release.tag_name}}
        run: npm run build
 
+     - name: Compile Macros
+       env:
+         MODULE_VERSION: ${{steps.get_version.outputs.version-without-v}}
+         GH_PROJECT: ${{github.repository}}
+         GH_TAG: ${{github.event.release.tag_name}}
+       run: npm run compile:macros
+
      - name: Create zip archive
        working-directory: dist
-       run: zip -r ./module.zip module.json scripts/
+       run: zip -r ./module.zip module.json scripts/ macros/ packs/
 
      - name: Update release with files
        id: create_version_release

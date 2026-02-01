@@ -1,7 +1,8 @@
-import { CrstlUtils } from "../ts/crstl-utils"
-import { CFScene } from "../ts/domain/scene"
+import { CrstlUtils } from "../../ts/crstl-utils"
+import { CFScene } from "../../ts/domain/scene"
+import { statueMovement } from "./helpers/move-statue-helper"
 
-export const lockGarrison2 = (crstlUtils: CrstlUtils) => {
+((crstlUtils: CrstlUtils) => {
   const westWallIds = [
     "Scene.jEO9rCEGnP819MgW.Wall.1Th4CRv97YjoEIJK",
     "Scene.jEO9rCEGnP819MgW.Wall.TQaX0h5yp7wq53Lz",
@@ -34,7 +35,7 @@ export const lockGarrison2 = (crstlUtils: CrstlUtils) => {
  
   const scene = crstlUtils.sceneFactory.buildFromUuid('jEO9rCEGnP819MgW') as CFScene;
 
-  scene.moveItemsAlongGrid([westToken, ...westWalls], {x: -3, y: 0})
-  scene.moveItemsAlongGrid([northToken, ...northWalls], {x: 0, y: -3})
-  scene.moveItemsAlongGrid([southToken, ...southWalls], {x: 0, y: 3})
-}
+  scene.moveItemsAlongGrid([westToken, ...westWalls], {x: -2, y: 0}, statueMovement)
+  scene.moveItemsAlongGrid([northToken, ...northWalls], {x: 0, y: -2}, statueMovement)
+  scene.moveItemsAlongGrid([southToken, ...southWalls], {x: 0, y: 2}, statueMovement)
+})(window.CrstlUtils)
