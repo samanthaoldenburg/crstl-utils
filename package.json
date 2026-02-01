@@ -12,6 +12,7 @@
     "release": "node bin/update-module-version.js $*"
   },
   "devDependencies": {
+    "@foundryvtt/foundryvtt-cli": "^3.0.3",
     "fvtt-types": "github:League-of-Foundry-Developers/foundry-vtt-types#main",
     "rollup-plugin-copy": "^3.5.0",
     "rollup-plugin-scss": "^4.0.1",
