@@ -3,22 +3,15 @@
  * from my player's screen.
  */
 
-import { CrstlUtils } from "./crstl-utils";
-
-type QueryFunction = (queryData: any) => Promise<void>
+type QueryFunction = (queryData: any) => void
 
 export class CFGmUserQueries {
-  private readonly crstlUtils: CrstlUtils
-  constructor() {
-    this.crstlUtils = new CrstlUtils(game as ReadyGame)
-  }
-
-  public queries: Record<string, QueryFunction> = {
-    "updateJournalEntryPageOwnership": this.updateJournalEntryPageOwnership
+  public static queries: Record<string, QueryFunction> = {
+    "updateJournalEntryPageOwnership": CFGmUserQueries.updateJournalEntryPageOwnership
   }
 
   // Make Journal Entry Page observable to a player
-  async updateJournalEntryPageOwnership(
+  static updateJournalEntryPageOwnership(
     queryData: {
       playerUuid: string,
       journalEntryUuid: string,
@@ -26,11 +19,13 @@ export class CFGmUserQueries {
       ownershipLevel: CONST.DOCUMENT_OWNERSHIP_LEVELS,
     }
   ) {
-    const player = this.crstlUtils.readyGame.users.get(queryData.playerUuid);
+    const readyGame = game as ReadyGame;
+
+    const player = readyGame.users.get(queryData.playerUuid);
 
     if (!player) return console.warn("Player is GM");
 
-    const journal = this.crstlUtils.readyGame.journal.get(queryData.journalEntryUuid);
+    const journal = readyGame.journal.get(queryData.journalEntryUuid);
 
     if (!journal) return console.error("Journal entry cannot be found");
 

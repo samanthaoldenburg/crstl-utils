@@ -16,7 +16,7 @@ Hooks.once('init', () => {
 
 Hooks.once('ready', () => {
   window.CrstlUtils = new CrstlUtils(game as ReadyGame)
-  const gmQueries = new CFGmUserQueries().queries;
+  const gmQueries = CFGmUserQueries.queries;
   for (const queryName in gmQueries) {
     const fullQueryName = `crstl-utils.${queryName}` as keyof typeof CONFIG.queries;
 
@@ -28,7 +28,7 @@ Hooks.once('ready', () => {
       // ran on the server side. Originally, we were going to use a query runner
       // defined in the window, but that seems to cause things to resolve to
       // undefined.
-      const queryRunner = new CFGmUserQueries();
+      const queryRunner = CFGmUserQueries;
       const queryFunction = queryRunner.queries[queryName as keyof typeof queryRunner.queries];
 
       queryFunction(queryData)
