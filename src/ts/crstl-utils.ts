@@ -2,6 +2,7 @@ import { CFTokenFactory } from "./factories/token-factory"
 import { CFSceneFactory } from "./factories/scene-factory"
 import { CFScene } from "./domain/scene"
 import { CFWallFactory } from "./factories/wall-factory"
+import { CFGmUserQueries } from "./gm-user-queries"
 
 declare global {
   interface Window {
@@ -15,6 +16,13 @@ Hooks.once('init', () => {
 
 Hooks.once('ready', () => {
   window.CrstlUtils = new CrstlUtils(game as ReadyGame)
+
+  for (const queryName in window.CrstlUtils.queryRunner.queries) {
+    const fullQueryName = `crstl-utils.{queryName}` as keyof typeof CONFIG.queries;
+
+    CONFIG.queries[fullQueryName] =
+      window.CrstlUtils.queryRunner.queries[queryName];
+  }
 })
 
 /**
@@ -31,47 +39,53 @@ export class CrstlUtils {
   public tokenFactory: CFTokenFactory;
   public sceneFactory: CFSceneFactory;
   public wallFactory: CFWallFactory;
+  public queryRunner: CFGmUserQueries;
 
   constructor (private readonly game: ReadyGame) {
     this.tokenFactory = new CFTokenFactory(this.game)
     this.wallFactory = new CFWallFactory(this.game)
     this.sceneFactory = new CFSceneFactory(this.game)
+    this.queryRunner = new CFGmUserQueries(this)
   }
 
-  public async executeMacroAsGm(macroName: string, macroArguments: unknown): Promise<void> {
-    if (!game.macros) return;
+  public get readyGame(): ReadyGame { return this.game; }
 
-    const macro = game.macros.getName(macroName);
+  public async executeMacroAsGm(macroName: string, macroArguments: unknown): Promise<void> {
+    const macro = this.game.macros.getName(macroName);
 
     if (!macro) {
       return this.uiError(`Macro ${macroName} does not exist`);
     }
 
+    const queryData = { macro: macro.id, scope: macroArguments };
+
+    await this.executeQueryAsGm("advanced-macros.executeMacro", queryData);
+  }
+
+  public async executeQueryAsGm(queryName: string, scope: unknown) {
     // Use the Advanced Macro's query engine directly
     // This may need to be updated when Foundry updates
-    const gmUser = game.users.activeGM;
+    const gmUser = this.game.users?.activeGM;
 
     if (!gmUser) {
       return this.uiWarn("GM isn't logged in. Cannot execute command.");
     }
 
-    const queryData = { macro: macro.id, scope: macroArguments };
-
     // It's very hard to type coerce this due to the typing around CONFIG.queries
     //
     // @ts-expect-error
-    gmUser.query("advanced-macros.executeMacro", queryData, {timeout: 30000})
+    gmUser.query(queryName, scope, {timeout: 30000})
   }
 
   public currentScene(): CFScene {
     return this.sceneFactory.buildFromScene(this.game.scenes.current as Scene);
   }
 
-  private uiWarn(message: string) {
+  public uiWarn(message: string) {
     ui?.notifications?.warn(message);
   }
 
-  private uiError(message: string) {
+  public uiError(message: string) {
     ui?.notifications?.error(message);
   }
 }
