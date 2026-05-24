@@ -23,4 +23,28 @@ export class CFToken implements CFScenePlaceable {
 
     return {} as TokenDocument.UpdateData;
   }
+
+  primaryPlayerId(): string | null {
+    const actor = this.document.actor;
+
+    if (!actor || !actor.id) return null;
+
+    // TODO(Maybe): figure out if we want to grab the game object like this.
+    // Maybe PF2E will be a good reference.
+    const readyGame = game as ReadyGame;
+
+    let match = null;
+
+    readyGame.users.forEach((user) => {
+      const userCharacterId = user.character?.id;
+
+      if (!userCharacterId) return;
+
+      if (userCharacterId == actor.id) {
+        match = user.id
+      }
+    });
+
+    return match;
+  }
 }
