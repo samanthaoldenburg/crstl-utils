@@ -16,8 +16,8 @@ Hooks.once('init', () => {
 
 Hooks.once('ready', () => {
   window.CrstlUtils = new CrstlUtils(game as ReadyGame)
-
-  for (const queryName in window.CrstlUtils.queryRunner.queries) {
+  const gmQueries = new CFGmUserQueries().queries;
+  for (const queryName in gmQueries) {
     const fullQueryName = `crstl-utils.${queryName}` as keyof typeof CONFIG.queries;
 
     // It's very hard to type coerce this due to the typing around CONFIG.queries
