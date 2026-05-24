@@ -20,8 +20,19 @@ Hooks.once('ready', () => {
   for (const queryName in window.CrstlUtils.queryRunner.queries) {
     const fullQueryName = `crstl-utils.${queryName}` as keyof typeof CONFIG.queries;
 
-    CONFIG.queries[fullQueryName] =
-      window.CrstlUtils.queryRunner.queries[queryName];
+    // It's very hard to type coerce this due to the typing around CONFIG.queries
+    //
+    // @ts-expect-error
+    CONFIG.queries[fullQueryName] = (queryData: unknown) => {
+      // We need to create a new query runner, as I think queries are somewhat
+      // ran on the server side. Originally, we were going to use a query runner
+      // defined in the window, but that seems to cause things to resolve to
+      // undefined.
+      const queryRunner = new CFGmUserQueries();
+      const queryFunction = queryRunner.queries[queryName as keyof typeof queryRunner.queries];
+
+      queryFunction(queryData)
+    }
   }
 })
 
@@ -39,13 +50,11 @@ export class CrstlUtils {
   public tokenFactory: CFTokenFactory;
   public sceneFactory: CFSceneFactory;
   public wallFactory: CFWallFactory;
-  public queryRunner: CFGmUserQueries;
 
   constructor (private readonly game: ReadyGame) {
     this.tokenFactory = new CFTokenFactory(this.game)
     this.wallFactory = new CFWallFactory(this.game)
     this.sceneFactory = new CFSceneFactory(this.game)
-    this.queryRunner = new CFGmUserQueries(this)
   }
 
   public get readyGame(): ReadyGame { return this.game; }

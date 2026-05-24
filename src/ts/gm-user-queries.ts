@@ -5,15 +5,20 @@
 
 import { CrstlUtils } from "./crstl-utils";
 
-export class CFGmUserQueries {
-  constructor(private readonly crstlUtils: CrstlUtils) {}
+type QueryFunction = (queryData: any) => Promise<void>
 
-  public queries = {
-    "update-journal-entry-page-ownership": this.updateJournalEntryPageOwnership
+export class CFGmUserQueries {
+  private readonly crstlUtils: CrstlUtils
+  constructor() {
+    this.crstlUtils = new CrstlUtils(game as ReadyGame)
+  }
+
+  public queries: Record<string, QueryFunction> = {
+    "updateJournalEntryPageOwnership": this.updateJournalEntryPageOwnership
   }
 
   // Make Journal Entry Page observable to a player
-  updateJournalEntryPageOwnership(
+  async updateJournalEntryPageOwnership(
     queryData: {
       playerUuid: string,
       journalEntryUuid: string,
