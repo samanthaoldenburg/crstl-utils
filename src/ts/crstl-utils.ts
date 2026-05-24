@@ -18,7 +18,7 @@ Hooks.once('ready', () => {
   window.CrstlUtils = new CrstlUtils(game as ReadyGame)
 
   for (const queryName in window.CrstlUtils.queryRunner.queries) {
-    const fullQueryName = `crstl-utils.{queryName}` as keyof typeof CONFIG.queries;
+    const fullQueryName = `crstl-utils.${queryName}` as keyof typeof CONFIG.queries;
 
     CONFIG.queries[fullQueryName] =
       window.CrstlUtils.queryRunner.queries[queryName];

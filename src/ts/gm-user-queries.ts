@@ -18,7 +18,7 @@ export class CFGmUserQueries {
       playerUuid: string,
       journalEntryUuid: string,
       journalPageUuid: string,
-      ownership_level: keyof typeof CONST.DOCUMENT_OWNERSHIP_LEVELS,
+      ownershipLevel: CONST.DOCUMENT_OWNERSHIP_LEVELS,
     }
   ) {
     const player = this.crstlUtils.readyGame.users.get(queryData.playerUuid);
@@ -34,7 +34,7 @@ export class CFGmUserQueries {
     if (!journalPage) return console.error("Journal page cannot be found");
 
     const ownership = journalPage.ownership;
-    ownership[player.id] = CONST.DOCUMENT_OWNERSHIP_LEVELS[queryData.ownership_level];
+    ownership[player.id] = queryData.ownershipLevel;
 
     journalPage.update({ownership});
   }
