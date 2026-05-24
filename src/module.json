@@ -11,7 +11,7 @@
   "version": "0.7.0",
   "compatibility": {
     "minimum": "13",
-    "verified": "13"
+    "verified": "14"
   },
   "esmodules": [
     "scripts/crstl-utils.js"
@@ -40,6 +40,13 @@
         "manifest": "https://github.com/FantasyCalendar/FoundryVTT-Sequencer/releases/latest/download/module.json",
         "compatibility": {
           "minimum": "3.6.0"
+        }
+      },
+      {
+        "id": "advanced-macros",
+        "manifest": "https://github.com/mclemente/fvtt-advanced-macros/releases/latest/download/module.json",
+        "compatibility": {
+          "minimum": "2.3.0"
         }
       }
     ]
